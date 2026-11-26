@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <title>La Noche de los Triángulos Congruentes · Freddy Fazbear's Pizza</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div id="app">
+  <div id="game">
+    <canvas id="view" width="320" height="180"></canvas>
+    <div id="hot"></div>
+
+    <!-- HUD -->
+    <div id="hud" class="hidden">
+      <div class="hud-l">
+        <div id="hud-night">NOCHE 1</div>
+        <div id="hud-clock">12<small> AM</small></div>
+      </div>
+      <div id="hud-note" class="hidden"></div>
+      <div class="hud-r">
+        <div id="hud-power"><span class="lbl">ENERGÍA</span><div id="pwr"></div><b id="pwr-n">100%</b></div>
+        <button id="btn-manual" class="ibtn" title="Manual del guardia (M)"><img alt="" id="ic-book"><span>MANUAL</span></button>
+        <button id="btn-mute" class="ibtn sq" title="Sonido"><img alt="" id="ic-snd"></button>
+      </div>
+    </div>
+    <div id="tray" class="hidden"><span class="tray-l">PISTAS</span><div id="chips"></div><span class="tray-l">OBJETOS</span><div id="items"></div></div>
+    <div id="toast"></div>
+
+    <!-- Interfaz del modo exploración -->
+    <div id="xui" class="hidden">
+      <div id="tasks"><div class="tk-h">TAREAS</div><ul id="tk-list"></ul></div>
+      <canvas id="mini" width="128" height="72"></canvas>
+      <div id="roomname"></div>
+      <div id="prompt" class="hidden"></div>
+      <button id="lampbtn" class="ibtn" title="Lámpara (F) · Destello (Q)"><img alt="" id="ic-lamp"><span>LÁMPARA</span><kbd>F</kbd><b id="lamp-st">ON</b><i id="lamp-bat" role="meter" aria-label="Batería" aria-valuemin="0" aria-valuemax="100" aria-valuenow="100"><i></i></i></button>
+    </div>
+
+    <!-- Diálogo -->
+    <div id="dialog" class="hidden">
+      <div class="dlg-box pbox">
+        <div class="dlg-pic"><img id="dlg-img" alt=""></div>
+        <div class="dlg-body">
+          <div id="dlg-name">???</div>
+          <div id="dlg-text"></div>
+        </div>
+        <div id="dlg-next">▼</div>
+        <button id="dlg-skip" class="link">SALTAR ▸▸</button>
+      </div>
+    </div>
+
+    <!-- Pregunta -->
+    <div id="qm" class="hidden"></div>
+
+    <!-- Manual -->
+    <div id="manual" class="hidden">
+      <div class="man-box pbox">
+        <div class="man-head"><img alt="" id="ic-book2"><span>MANUAL DEL GUARDIA</span><button id="man-x" class="x">✕</button></div>
+        <div class="man-main">
+          <div id="man-tabs"></div>
+          <div id="man-page"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Cómo jugar -->
+    <div id="evt" class="hidden">
+      <canvas id="evt-cv" width="320" height="180"></canvas>
+      <div class="evt-top"><div id="evt-title">¡SE ACERCA!</div><div id="evt-time">5</div></div>
+      <div class="evt-mid"><div id="evt-fig"></div><div id="evt-btns"></div><div id="evt-msg"></div></div>
+      <div class="evt-bars"><div class="eb t"><i id="evt-t"></i></div><div class="eb c"><i id="evt-c"></i><span id="evt-cp">CLASE 0%</span></div></div>
+      <div id="evt-res" class="hidden"></div>
+    </div>
+    <div id="lobby" class="hidden">
+      <div class="lb-box pbox">
+        <div class="lb-pre">EQUIPO</div>
+        <div id="lb-name" class="lb-name"></div>
+        <div id="lb-msg" class="lb-msg"></div>
+        <div id="lb-count" class="lb-count hidden"></div>
+        <button id="lb-cancel" class="btn ghost">CAMBIAR NOMBRE</button>
+      </div>
+    </div>
+    <div id="howto" class="hidden">
+      <div class="how-box pbox">
+        <h2>¿CÓMO SE JUEGA?</h2>
+        <ol id="how-list"></ol>
+        <button id="how-go" class="btn">¡ENTENDIDO!</button>
+      </div>
+    </div>
+
+    <!-- Objeto obtenido -->
+    <div id="gotitem" class="hidden">
+      <div class="how-box pbox">
+        <h2>¡OBTUVISTE!</h2>
+        <img id="gi-img" alt="">
+        <div id="gi-name"></div>
+        <p>Guárdalo: lo necesitarás en otra tarea.</p>
+        <button id="gi-go" class="btn">¡LISTO!</button>
+      </div>
+    </div>
+
+    <!-- Tarjeta de noche -->
+    <div id="card" class="hidden">
+      <div class="card-in">
+        <div class="card-n" id="card-n">NOCHE 1</div>
+        <div class="card-t" id="card-t">12:00 AM</div>
+        <div class="card-s" id="card-s">La Oficina</div>
+        <div class="card-k" id="card-k">Identifica a, b y c</div>
+      </div>
+    </div>
+
+    <!-- Fin de la noche -->
+    <div id="nightend" class="hidden">
+      <div class="ne-box">
+        <div class="ne-6">6 AM</div>
+        <div class="ne-t" id="ne-t">NOCHE 1 SUPERADA</div>
+        <div class="ne-stars" id="ne-stars"></div>
+        <div class="ne-stats" id="ne-stats"></div>
+        <div class="ne-out" id="ne-out"></div>
+        <button id="ne-go" class="btn">SIGUIENTE NOCHE ▶</button>
+      </div>
+    </div>
+
+    <!-- Susto -->
+    <div id="scare" class="hidden"><div class="scare-t">¡TE ATRAPÓ!</div><div class="scare-s">Respira… la energía se restaura al 60%.</div></div>
+
+    <!-- Título -->
+    <div id="title" class="screen">
+      <div class="tt-left">
+        <div class="tt-pre">FREDDY FAZBEAR'S PIZZA PRESENTA</div>
+        <h1><span class="tt-1">LA NOCHE DE LOS</span><span class="tt-2" data-t="TRIÁNGULOS CONGRUENTES">TRIÁNGULOS CONGRUENTES</span></h1>
+        <div class="tt-eq">LLL · LAL · ALA · AAL · HC</div>
+        <label class="tt-name"><span>NOMBRE DEL GUARDIA</span><input id="in-name" maxlength="20" autocomplete="off" placeholder="Escribe tu nombre"></label>
+        <div class="tt-btns">
+          <button id="btn-start" class="btn">▶ EMPEZAR</button>
+          <button id="btn-cont" class="btn ghost hidden">CONTINUAR</button>
+        </div>
+        <div class="tt-foot">7 noches · ~40 min · usa el ratón o toca la pantalla</div>
+      </div>
+    </div>
+
+    <!-- Final -->
+    <div id="end" class="screen hidden">
+      <div class="cheque">
+        <div class="ck-h">FAZBEAR ENTERTAINMENT, INC.</div>
+        <div class="ck-sub">CHEQUE DE PAGO · SEMANA 1</div>
+        <div class="ck-row"><span>PÁGUESE A:</span><b id="ck-name">GUARDIA</b></div>
+        <div class="ck-row"><span>CANTIDAD:</span><b class="ck-amt">$120.00</b></div>
+        <div class="ck-row"><span>CONCEPTO:</span><b>Sobrevivir 7 noches y dominar los criterios de congruencia</b></div>
+        <div class="ck-stats" id="ck-stats"></div>
+        <div class="ck-stars" id="ck-stars"></div>
+        <div class="stamp">CRITERIOS<br>DOMINADOS</div>
+      </div>
+      <div class="end-btns">
+        <button id="btn-again" class="btn">↺ JUGAR DE NUEVO</button>
+        <div class="end-hint">Toma una captura de pantalla de tu cheque.</div>
+      </div>
+    </div>
+
+    <div id="rotate">Gira tu pantalla ↻<br><small>(se juega en horizontal)</small></div>
+    <div id="static"></div>
+    <div id="flash"></div>
+    <div id="crt"></div>
+  </div>
+</div>
+
+<script src="js/px.js"></script>
+<script src="js/sprites.js"></script>
+<script src="js/tri.js"></script>
+<script src="js/levels.js"></script>
+<script src="js/tiles.js"></script>
+<script src="js/props-a.js"></script>
+<script src="js/props-b.js"></script>
+<script src="js/props-c.js"></script>
+<script src="js/props-n2.js"></script>
+<script src="js/props-n3.js"></script>
+<script src="js/props-n4.js"></script>
+<script src="js/props-n5.js"></script>
+<script src="js/props-n6.js"></script>
+<script src="js/props-n7.js"></script>
+<script src="js/world.js"></script>
+<script src="js/maps.js"></script>
+<script src="js/maps-n2.js"></script>
+<script src="js/maps-n3.js"></script>
+<script src="js/maps-n4.js"></script>
+<script src="js/maps-n5.js"></script>
+<script src="js/maps-n6.js"></script>
+<script src="js/maps-n7.js"></script>
+<script src="js/scenes-a.js"></script>
+<script src="js/scenes-b.js"></script>
+<script src="js/scenes-c.js"></script>
+<script src="js/audio.js"></script>
+<script src="js/inputs.js"></script>
+<script src="js/inputs2.js"></script>
+<script src="js/lobby.js"></script>
+<script src="js/game.js"></script>
+</body>
+</html>

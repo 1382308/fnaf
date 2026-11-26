@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Panel del profesor · Triángulos Congruentes</title>
+<link rel="stylesheet" href="css/dashboard.css">
+</head>
+<body>
+<canvas id="gl"></canvas>
+<canvas id="noise" class="fx-noise" width="96" height="54"></canvas><div class="fx-vignette"></div><div class="fx-scan"></div>
+<div class="cctv"><span class="rec">● REC</span><span>CAM 1A · SALÓN PRINCIPAL</span><span id="cam-time">12:00:00</span></div>
+<div id="clk" class="clk">12 AM</div>
+<div id="flash" class="flash"></div>
+
+<header class="top">
+  <div class="brand">
+    <svg class="logo" viewBox="0 0 40 40" aria-hidden="true"><rect x="12" y="4" width="16" height="16" rx="1" /><rect x="6" y="20" width="28" height="5" rx="1" /><rect x="12" y="15" width="16" height="3" class="band" /><path d="M20 32 L13 28 L13 37 Z M20 32 L27 28 L27 37 Z" class="tie" /></svg>
+    <div><h1>FREDDY FAZBEAR'S PIZZA</h1><p>TURNO DE NOCHE · SOBREVIVE HASTA LAS 6 AM</p></div>
+  </div>
+  <div class="top-r">
+    <span id="phase" class="badge">…</span>
+    <button id="toggle" class="btn ghost" aria-controls="drawer">PANEL <b id="n-pend-badge" class="pill hidden">0</b></button>
+    <button id="boo" class="btn bad" disabled title="El animatrónico se acerca: todos deben contestar en 5 s">⚡ EVENTO</button>
+    <button id="start" class="btn go" disabled>▶ INICIAR</button>
+  </div>
+</header>
+
+<div id="denied" class="denied hidden">Abre este panel desde la computadora del profesor, en <b id="local-url"></b>. Desde la red no se permite aceptar ni rechazar equipos.</div>
+
+<aside id="board" class="board">
+  <div class="global">
+    <div class="g-top"><span>TURNO DE LA CLASE</span><b id="g-pct">0%</b></div>
+    <div class="g-bar"><i id="g-fill"></i><em></em></div>
+    <div class="g-moons" id="g-moons"></div>
+  </div>
+  <div id="rows" class="rows"></div>
+  <p id="rows-empty" class="empty">Esperando equipos…</p>
+</aside>
+
+<div id="banner" class="banner"></div>
+<div id="ticker" class="ticker"></div>
+<div id="cd" class="cd hidden"></div>
+<div id="evh" class="evh hidden">
+  <div class="evh-title" id="evh-title">¡FOXY SE ACERCA!</div>
+  <div class="evh-time" id="evh-time">5</div>
+  <div class="evh-bar"><i id="evh-fill"></i><span id="evh-pct">0%</span></div>
+  <div class="evh-res hidden" id="evh-res"></div>
+</div>
+
+<aside id="drawer" class="drawer">
+  <div class="stats">
+    <div><b id="n-pend">0</b><span>PENDIENTES</span></div>
+    <div><b id="n-ok">0</b><span>ACEPTADOS</span></div>
+    <div><b id="n-on">0</b><span>EN LÍNEA</span></div>
+    <div><b id="n-fin">0</b><span>LLEGARON 6 AM</span></div>
+  </div>
+  <div class="sec-h"><h2>SOLICITUDES</h2><button id="all" class="btn ghost small" disabled>ACEPTAR TODOS</button></div>
+  <ul id="pending" class="cards"></ul>
+  <p id="pending-empty" class="empty">Nadie espera. Los equipos aparecen aquí cuando escriben su nombre.</p>
+  <div class="sec-h"><h2>EQUIPOS</h2></div>
+  <ul id="teams" class="manage"></ul>
+  <div id="rej-sec" class="hidden"><div class="sec-h"><h2>RECHAZADOS</h2></div><ul id="rejected" class="cards"></ul></div>
+</aside>
+<script type="module" src="js/dashboard.js"></script>
+</body>
+</html>
